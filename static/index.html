@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111218"><title>ShortDrama · 全球短剧</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/vendor/hls.min.js"></script><script defer src="/app.js"></script>
+</head>
+<body>
+<svg class="icon-defs" aria-hidden="true"><defs>
+ <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="m8 5 12 7-12 7z"/></symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5"/></symbol>
+ <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6c-2.2-2.2-5.5-1.6-7.1 0L12 6.3l-1.7-1.7C8 2.3 4.3 3 2.9 5.8.5 10.6 7 16 12 20c5-4 11.5-9.4 9.1-14.2z"/></symbol>
+ <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+ <symbol id="i-gear" viewBox="0 0 24 24"><path d="m9 3-1 3-3 1-2 4 2 3 1 3 4 2 3-1 3 1 4-2 1-3-2-4-3-1-1-3z"/><circle cx="12" cy="12" r="3"/></symbol>
+ <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+ <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+ <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+ <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m8 4 8 8-8 8"/></symbol>
+ <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></symbol>
+ <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"/><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"/><path d="M6 2v7a6 6 0 0 0 12 0V2H6Z"/></symbol>
+</defs></svg>
+<div class="app-shell">
+ <aside class="sidebar" aria-label="主导航">
+  <a href="/" class="brand" aria-label="ShortDrama 首页"><span class="brand-mark"><svg><use href="#i-play"/></svg></span><span>Short<span class="brand-light">Drama</span><small>GLOBAL SHORT STORIES</small></span></a>
+  <p class="nav-caption">我的片库</p>
+  <nav class="main-nav">
+   <button class="nav-item active" data-view="feed"><svg><use href="#i-grid"/></svg>发现片单<span class="nav-dot"></span></button>
+   <button class="nav-item" data-view="rank"><svg><use href="#i-trophy"/></svg>排行榜<span class="nav-badge-pill">官方</span></button>
+   <button class="nav-item" data-view="favorites"><svg><use href="#i-heart"/></svg>我的收藏<span id="favorite-count" class="nav-count">0</span></button>
+   <button class="nav-item" data-view="history"><svg><use href="#i-clock"/></svg>观看记录</button>
+  </nav>
+  <div class="platform-heading"><p class="nav-caption">内容平台</p><span>6</span></div>
+  <nav id="platform-nav" class="platform-nav" aria-label="选择平台"></nav>
+  <div class="sidebar-bottom"><span class="connection-dot"></span><div>本地片库<small>六个平台，一个入口</small></div><span class="version">V1</span></div>
+ </aside>
+ <div class="main-area">
+  <header class="topbar">
+   <div class="breadcrumb"><span>全球短剧</span><svg><use href="#i-chevron"/></svg><b id="breadcrumb-view">发现片单</b></div>
+   <form id="search-form" class="search-field" role="search"><svg><use href="#i-search"/></svg><input id="search-input" type="search" placeholder="搜索当前平台的剧名…" aria-label="搜索剧名" autocomplete="off"><kbd>↵</kbd></form>
+   <div class="header-actions"><label class="language-picker"><svg><use href="#i-globe"/></svg><select id="language" aria-label="内容语言"></select></label><button id="settings-open" class="icon-button" aria-label="连接设置"><svg><use href="#i-gear"/></svg></button></div>
+  </header>
+  <main id="main-content">
+   <section id="hero" class="hero skeleton-hero" aria-label="精选剧目">
+    <div class="hero-backdrop" id="hero-backdrop"></div><div class="hero-glow"></div>
+    <div class="hero-copy"><div class="hero-eyebrow"><span class="live-pill">精选短剧</span><span id="hero-platform">DramaBox</span><span class="tiny-separator">/</span><span>发现下一段故事</span></div><h1 id="hero-title">短剧，随时入戏。</h1><div id="hero-tags" class="hero-tags"></div><p id="hero-description">正在为你寻找新的故事…</p><div class="hero-actions"><button id="hero-detail" class="button-primary"><svg><use href="#i-play"/></svg>查看剧集</button><button id="hero-favorite" class="button-secondary"><svg><use href="#i-heart"/></svg><span>收藏</span></button></div></div>
+    <div class="hero-poster-wrap"><div class="poster-halo"></div><img id="hero-poster" class="hero-poster" alt="精选短剧封面"><span class="poster-caption">YOUR NEXT OBSESSION</span></div>
+    <div id="hero-dots" class="hero-dots" aria-label="切换精选剧目"></div>
+   </section>
+   <section class="library-section">
+    <div id="rank-bar" class="rank-bar" hidden>
+     <div class="rank-header-box">
+      <div class="rank-title-group">
+       <span class="rank-fire-badge">🔥 官方权威榜单</span>
+       <h3 id="rank-title-text" class="rank-main-title">红果新剧榜</h3>
+       <span id="rank-desc-pill" class="rank-desc-pill">实时热度排名 · 每日更新</span>
+      </div>
+     </div>
+     <div class="rank-controls">
+      <div class="rank-control-row">
+       <span class="rank-group-label">平台</span>
+       <div class="rank-platform-tabs" id="rank-platform-tabs">
+        <button class="rank-plat-btn active" data-platform="hongguo">红果短剧</button>
+        <button class="rank-plat-btn" data-platform="dramabox">DramaBox</button>
+        <button class="rank-plat-btn" data-platform="reelshort">ReelShort</button>
+        <button class="rank-plat-btn" data-platform="dramawave">DramaWave</button>
+        <button class="rank-plat-btn" data-platform="netshort">NetShort</button>
+        <button class="rank-plat-btn" data-platform="goodshort">GoodShort</button>
+        <button class="rank-plat-btn" data-platform="all">🌐 全网聚合榜</button>
+       </div>
+      </div>
+      <div class="rank-control-row" id="rank-cat-row">
+       <span class="rank-group-label">分类</span>
+       <div class="rank-category-tabs" id="rank-category-tabs">
+        <button class="rank-cat-btn active" data-cat="all">全部</button>
+        <button class="rank-cat-btn" data-cat="series">真人剧</button>
+        <button class="rank-cat-btn" data-cat="comic_series_rank">漫剧</button>
+        <button class="rank-cat-btn" data-cat="ai_series">AI剧</button>
+       </div>
+      </div>
+      <div class="rank-control-row" id="rank-sub-row">
+       <span class="rank-group-label">榜单</span>
+       <div class="rank-sub-tabs" id="rank-sub-tabs">
+        <button class="rank-sub-btn active" data-board="new_rank">✨ 新剧榜</button>
+        <button class="rank-sub-btn" data-board="hot_play">🔥 臻果热播榜</button>
+        <button class="rank-sub-btn" data-board="hot_search">🔍 热搜榜</button>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="section-heading"><div><div class="section-eyebrow" id="section-eyebrow">DISCOVER YOUR NEXT STORY</div><h2 id="section-title">为你发现</h2></div><div class="result-summary"><span id="result-count">加载片单</span><button id="refresh" class="text-button">刷新片单 <svg><use href="#i-arrow"/></svg></button></div></div>
+    <div class="filter-row"><span id="platform-chip" class="filter-chip">DramaBox</span><span id="language-chip">English</span><span class="filter-divider"></span><span id="feed-note">热门与精选推荐</span><span class="view-indicator"><svg><use href="#i-grid"/></svg>海报视图</span></div>
+    <div id="status-banner" class="status-banner" role="status" hidden></div>
+    <div id="cards" class="cards-grid" aria-live="polite"></div>
+    <div id="empty-state" class="empty-state" hidden><div class="empty-icon"><svg><use href="#i-search"/></svg></div><h3 id="empty-title">暂无片单</h3><p id="empty-description"></p><button id="empty-action" class="button-secondary" hidden>连接红果后端</button></div>
+    <div class="load-more-wrap"><button id="load-more" class="button-secondary" hidden>加载更多 <svg><use href="#i-arrow"/></svg></button><span id="list-end" hidden>这一轮片单已看完，刷新发现新的故事。</span></div>
+   </section>
+   <footer class="main-footer"><span><span class="footer-mark">S</span>ShortDrama</span><span>好故事，不止一种语言。</span><span>LOCAL EDITION · 0.2.0</span></footer>
+  </main>
+ </div>
+</div>
+<dialog id="drama-dialog" class="drama-dialog"><div class="detail-toolbar"><span id="detail-platform">剧目详情</span><button id="detail-close" class="icon-button" aria-label="关闭剧目详情"><svg><use href="#i-close"/></svg></button></div><div id="detail-loading" class="detail-loading">正在读取剧目和集数…</div><div id="detail-content" hidden>
+ <div class="detail-top"><img id="detail-cover" alt="剧目封面"><div class="detail-copy"><p class="section-eyebrow">A STORY WORTH YOUR TIME</p><h2 id="detail-title"></h2><div id="detail-tags" class="detail-tags"></div><p id="detail-description"></p><div class="detail-buttons"><button id="play-first" class="button-primary"><svg><use href="#i-play"/></svg>开始观看</button><button id="detail-favorite" class="button-secondary"><svg><use href="#i-heart"/></svg><span>收藏</span></button><a id="official-link" class="text-button" href="#" target="_blank" rel="noopener noreferrer">官方页面 ↗</a></div></div></div>
+ <div id="player-region" class="player-region" hidden><div class="player-heading"><span id="now-playing"></span><div class="player-tools"><select id="audio-track" aria-label="音轨" hidden></select><button id="next-episode" class="text-button">下一集 →</button></div></div><div class="video-shell"><video id="video" controls playsinline preload="metadata"></video><div id="playback-message" class="playback-message" role="status" hidden></div></div><div id="playback-note" class="playback-note"></div></div>
+ <div class="episode-heading"><h3>剧集列表 <span id="episode-count"></span></h3><span id="episode-legend">锁定剧集需在官方平台解锁</span></div><div id="episodes" class="episodes-grid"></div>
+</div></dialog>
+<dialog id="settings-dialog" class="settings-dialog"><div class="detail-toolbar"><h2>连接设置</h2><button id="settings-close" class="icon-button" aria-label="关闭连接设置"><svg><use href="#i-close"/></svg></button></div><p class="settings-intro">红果默认连接随包启动的官网后端，也可填写你已有的后端。海外五个平台直接读取官网片单。</p><form id="config-form"><label for="backend-url">红果后端地址</label><input id="backend-url" type="url" placeholder="http://127.0.0.1:8000" autocomplete="off"><label for="backend-key">API Key</label><input id="backend-key" type="password" placeholder="输入后端提供的 API Key" autocomplete="off"><p id="key-status" class="field-note">密钥仅保存在当前本地服务内存，重启后可重新填写。</p><div class="settings-actions"><button type="submit" class="button-primary">保存连接</button><button id="test-connection" type="button" class="button-secondary">测试连接</button></div><p id="settings-status" class="settings-status" role="status"></p></form><div class="settings-footnote">也可通过环境变量 HONGGUO_BASE_URL 和 HONGGUO_API_KEY 配置。默认启动红果官网后端；环境变量可指定其他后端。</div></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+</body></html>
